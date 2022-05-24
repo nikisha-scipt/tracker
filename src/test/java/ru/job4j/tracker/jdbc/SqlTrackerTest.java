@@ -1,9 +1,6 @@
 package ru.job4j.tracker.jdbc;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 import ru.job4j.tracker.model.Item;
 
 import java.io.InputStream;
@@ -52,6 +49,7 @@ public class SqlTrackerTest {
         }
     }
 
+    @Ignore
     @Test
     public void whenSaveItemAndFindByGeneratedIdThenMustBeTheSame() {
         SqlTracker tracker = new SqlTracker(connection);
