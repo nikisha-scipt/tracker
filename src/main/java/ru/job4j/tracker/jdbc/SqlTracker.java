@@ -17,6 +17,10 @@ public class SqlTracker implements Store, AutoCloseable {
         init();
     }
 
+    public SqlTracker(Connection connection) {
+        this.connection = connection;
+    }
+
     public void init() {
         try (InputStream in = SqlTracker.class.getClassLoader().getResourceAsStream("app.properties")) {
             Properties config = new Properties();
@@ -34,13 +38,9 @@ public class SqlTracker implements Store, AutoCloseable {
 
     @Override
     public Item add(Item item) {
-        long millis = System.currentTimeMillis();
-        Timestamp timestamp = new Timestamp(millis);
-        LocalDateTime localDateTime = timestamp.toLocalDateTime();
-        Timestamp timestampFromLDT = Timestamp.valueOf(localDateTime);
         try (PreparedStatement statement = connection.prepareStatement("insert into items(name, created) values (?, ?)")) {
             statement.setString(1, item.getName());
-            statement.setTimestamp(2, timestampFromLDT);
+            statement.setTimestamp(2, Timestamp.valueOf(item.getCreated()));
             statement.execute();
             try (ResultSet resultSet = statement.getGeneratedKeys()) {
                 if (resultSet.next()) {
