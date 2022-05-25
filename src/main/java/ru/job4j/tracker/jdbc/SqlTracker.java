@@ -4,7 +4,6 @@ import ru.job4j.tracker.model.Item;
 
 import java.io.InputStream;
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -56,9 +55,10 @@ public class SqlTracker implements Store, AutoCloseable {
     @Override
     public boolean replace(int id, Item item) {
         boolean res = false;
-        try (PreparedStatement statement = connection.prepareStatement("update items set name = ? where id = ?")) {
+        try (PreparedStatement statement = connection.prepareStatement("update items set name = ?, created = ? where id = ?")) {
             statement.setString(1, item.getName());
-            statement.setInt(2, id);
+            statement.setTimestamp(2, Timestamp.valueOf(item.getCreated()));
+            statement.setInt(3, id);
             res = statement.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -84,7 +84,7 @@ public class SqlTracker implements Store, AutoCloseable {
         try (PreparedStatement statement = connection.prepareStatement("select * from items;")) {
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
-                    res.add(new Item(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getTimestamp("created").toLocalDateTime()));
+                    res.add(createItem(resultSet));
                 }
             }
         } catch (SQLException e) {
@@ -100,7 +100,7 @@ public class SqlTracker implements Store, AutoCloseable {
             statement.setString(1, key);
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
-                    res.add(new Item(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getTimestamp("created").toLocalDateTime()));
+                    res.add(createItem(resultSet));
                 }
             }
         } catch (SQLException e) {
@@ -115,14 +115,18 @@ public class SqlTracker implements Store, AutoCloseable {
         try (PreparedStatement statement = connection.prepareStatement("select * from items where id = ?")) {
             statement.setInt(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    res = new Item(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getTimestamp("created").toLocalDateTime());
+                if (resultSet.next()) {
+                    res = createItem(resultSet);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return res;
+    }
+
+    private Item createItem(ResultSet resultSet) throws SQLException {
+        return new Item(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getTimestamp("created").toLocalDateTime());
     }
 
     @Override
