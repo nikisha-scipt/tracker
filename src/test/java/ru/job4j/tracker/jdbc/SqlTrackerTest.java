@@ -92,7 +92,7 @@ public class SqlTrackerTest {
         Item item3 = tracker.add(new Item("java"));
         Item item4 = tracker.add(new Item("spring"));
         List<Item> expected = List.of(
-                item,item1, item2
+                item, item1, item2
         );
         assertThat(tracker.findByName("test_name"), is(expected));
     }
