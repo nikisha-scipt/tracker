@@ -61,14 +61,17 @@ public class SqlTrackerTest {
     public void whenAddAndReplaceItem() {
         Item item = new Item("item_test");
         tracker.add(item);
-        Assert.assertTrue(tracker.replace(item.getId(), new Item("replace_item")));
+        item.setName("replace_item");
+        tracker.replace(item.getId(), item);
+        assertThat(item.getName(), is("replace_item"));
     }
 
     @Test
     public void whenDeleteItem() {
         Item item = new Item("delete_item");
         tracker.add(item);
-        Assert.assertTrue(tracker.delete(item.getId()));
+        tracker.delete(item.getId());
+        Assert.assertNull(tracker.findById(item.getId()));
     }
 
     @Test
@@ -83,9 +86,14 @@ public class SqlTrackerTest {
 
     @Test
     public void whenFindByNameItem() {
-        Item item = new Item("test_name");
-        tracker.add(item);
-        List<Item> expected = List.of(item);
+        Item item = tracker.add(new Item("test_name"));
+        Item item1 = tracker.add(new Item("test_name"));
+        Item item2 = tracker.add(new Item("test_name"));
+        Item item3 = tracker.add(new Item("java"));
+        Item item4 = tracker.add(new Item("spring"));
+        List<Item> expected = List.of(
+                item,item1, item2
+        );
         assertThat(tracker.findByName("test_name"), is(expected));
     }
 
