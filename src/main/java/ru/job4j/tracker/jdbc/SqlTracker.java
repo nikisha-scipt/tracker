@@ -136,4 +136,5 @@ public class SqlTracker implements Store, AutoCloseable {
             connection.close();
         }
     }
+
 }
