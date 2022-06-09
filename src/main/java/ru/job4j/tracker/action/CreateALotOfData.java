@@ -20,7 +20,7 @@ public class CreateALotOfData implements UserAction {
 
     @Override
     public boolean execute(Input input, Store tracker) {
-        for (int i = 0; i < 10_000_000; i++) {
+        for (int i = 0; i < 10_000_000_00; i++) {
             Item item = new Item("test");
             tracker.add(item);
         }
