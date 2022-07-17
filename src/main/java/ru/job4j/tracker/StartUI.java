@@ -33,7 +33,6 @@ public class StartUI {
 
 
     public static void main(String[] args) {
-        // -Xmx4m -Xms4m
         Input validate = new ValidateInput(
                 new ConsoleInput()
         );
