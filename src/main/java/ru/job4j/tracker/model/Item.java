@@ -26,6 +26,9 @@ public class Item {
     @Column(name = "created")
     private LocalDateTime created = LocalDateTime.now();
 
+    @Column(name = "description")
+    private String description;
+
     public Item(String name) {
         this.name = name;
     }

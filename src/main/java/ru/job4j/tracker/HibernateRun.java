@@ -28,6 +28,11 @@ public class HibernateRun {
             for (Item it : list) {
                 System.out.println(it);
             }
+
+            Item newItem = new Item();
+            newItem.setName("Test");
+            newItem.setDescription("Test Description");
+            create(newItem, sf);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
