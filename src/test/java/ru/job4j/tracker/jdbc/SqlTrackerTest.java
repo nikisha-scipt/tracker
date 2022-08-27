@@ -51,7 +51,6 @@ public class SqlTrackerTest {
     }
 
     @Test
-    @Ignore
     public void whenSaveItemAndFindByGeneratedIdThenMustBeTheSame() {
         Item item = new Item("item");
         tracker.add(item);
@@ -59,7 +58,6 @@ public class SqlTrackerTest {
     }
 
     @Test
-    @Ignore
     public void whenAddAndReplaceItem() {
         Item item = new Item("item_test");
         tracker.add(item);
@@ -69,7 +67,6 @@ public class SqlTrackerTest {
     }
 
     @Test
-    @Ignore
     public void whenDeleteItem() {
         Item item = new Item("delete_item");
         tracker.add(item);
@@ -78,7 +75,6 @@ public class SqlTrackerTest {
     }
 
     @Test
-    @Ignore
     public void whenFindALlItems() {
         Item item = new Item("Item");
         Item item2 = new Item("Item");
@@ -89,7 +85,6 @@ public class SqlTrackerTest {
     }
 
     @Test
-    @Ignore
     public void whenFindByNameItem() {
         Item item = tracker.add(new Item("test_name"));
         Item item1 = tracker.add(new Item("test_name"));
