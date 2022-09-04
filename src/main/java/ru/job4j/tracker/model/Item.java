@@ -56,6 +56,7 @@ public class Item {
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
             return false;
         }
+
         Item item = (Item) o;
         return id != null && Objects.equals(id, item.id);
     }
