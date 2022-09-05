@@ -5,6 +5,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.query.Query;
 import ru.job4j.tracker.model.Item;
 
 import java.util.List;
@@ -28,34 +29,30 @@ public class HbmTracker implements Store, AutoCloseable {
 
     @Override
     public boolean replace(int id, Item item) {
+        boolean rsl;
         Session session = sf.openSession();
         session.beginTransaction();
-        Item res = session.get(Item.class, id);
-        res.setName(item.getName());
-        res.setDescription(item.getDescription());
-        res.setCreated(item.getCreated());
-
-        /* session.createQuery("update Item i set i.name = :fid, " +
-                "i.description = :fdesciption, " +
-                "i.created = :fcreated where i.id = :fid")
-                        .setParameter("fid", item.getName())
-                        .setParameter("fdesciption", item.getDescription())
-                        .setParameter("fcreated", item.getCreated())
-                        .executeUpdate(); */
-
+        Query query = session.createQuery("update Item i set i.name = :fid, "
+                + "i.description = :fdesciption, "
+                + "i.created = :fcreated where i.id = :fid");
+        query.setParameter("fid", item.getName());
+        query.setParameter("fdesciption", item.getDescription());
+        query.setParameter("fcreated", item.getCreated());
+        rsl = query.executeUpdate() != -1;
         session.getTransaction().commit();
-        return true;
+        return rsl;
     }
 
     @Override
     public boolean delete(int id) {
+        boolean rsl;
         Session session = sf.openSession();
         session.beginTransaction();
-        session.createQuery("delete from Item where id = :fid")
-                .setParameter("fid", id)
-                .executeUpdate();
+        Query query = session.createQuery("delete from Item where id = :fid");
+        query.setParameter("fid", id);
+        rsl = query.executeUpdate() != -1;
         session.getTransaction().commit();
-        return true;
+        return rsl;
     }
 
     @Override
