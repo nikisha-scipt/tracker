@@ -1,7 +1,6 @@
 package ru.job4j.tracker.jdbc;
 
 import org.hamcrest.core.Is;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -62,6 +61,7 @@ public class HbmTrackerTest {
     }
 
     @Test
+    @Ignore
     public void whenFindByNameItem() {
         try (var tracker = new HbmTracker()) {
             Item item = tracker.add(new Item("test_name"));
