@@ -19,8 +19,5 @@
         <property name="use_sql_comments">true</property>
 
         <mapping class="ru.job4j.tracker.model.Item" />
-        <mapping class="ru.job4j.tracker.tooone.UserMessenger" />
-        <mapping class="ru.job4j.tracker.tooone.Role" />
-        <mapping class="ru.job4j.tracker.tooone.User" />
     </session-factory>
 </hibernate-configuration>
